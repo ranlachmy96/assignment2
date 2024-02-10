@@ -25,8 +25,8 @@ module.exports = class MongoStorage extends EventEmitter {
     return this.Model.find({});
   }
 
-  findById(id) {
-    return this.Model({ id });
+  findById(_id) {
+    return this.Model.find({ _id });
   }
 
   create(data) {
@@ -34,11 +34,11 @@ module.exports = class MongoStorage extends EventEmitter {
     entity.save();
   }
 
-  update(id, data) {
-    return this.Model.updateOne({ id }, data);
+  update(_id, data) {
+    return this.Model.updateOne({ _id }, data);
   }
 
-  delete(id) {
-    return this.Model.deleteOne({ id });
+  delete(_id) {
+    return this.Model.deleteOne({ _id });
   }
 };

@@ -1,12 +1,17 @@
 const { Router } = require('express');
-const { familyReunificationController } = require('../controllers/familyReunification.controller');
+const {
+  getAllReunificationCase, getReunificationCase,
+  createReunificationCase,
+  updateReunificationCase,
+  deleteReunificationCase,
+} = require('../controllers/familyReunification.controller');
 
 const familyReunificationRouter = new Router();
 
-familyReunificationRouter.get('/', familyReunificationController.getAllReunificationCase);
-familyReunificationRouter.get('/:id', familyReunificationController.getReunificationCase);
-familyReunificationRouter.post('/', familyReunificationController.createReunificationCase);
-familyReunificationRouter.put('/:id', familyReunificationController.updateReunificationCase);
-familyReunificationRouter.delete('/:id', familyReunificationController.deleteReunificationCase);
+familyReunificationRouter.get('/', getAllReunificationCase);
+familyReunificationRouter.get('/:id', getReunificationCase);
+familyReunificationRouter.post('/', createReunificationCase);
+familyReunificationRouter.put('/:id', updateReunificationCase);
+familyReunificationRouter.delete('/:id', deleteReunificationCase);
 
 module.exports = { familyReunificationRouter };

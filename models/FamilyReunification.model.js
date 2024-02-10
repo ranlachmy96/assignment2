@@ -1,9 +1,9 @@
 const { Schema, model } = require('mongoose');
 
 const familyReunificationSchema = new Schema({
-  id: { type: Number },
-  parents: { type: Array, items: { type: String } },
-  children: { type: Array, items: { type: String } },
+  _id: { type: Number },
+  parents: [{ type: String }],
+  children: [{ type: String }],
   active: { type: Boolean },
   reunion_date: { type: String, format: Date },
   reunion_location: { type: String },
