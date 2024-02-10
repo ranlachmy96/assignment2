@@ -1,3 +1,11 @@
+/** **************************************************************
+ * MongoDB Storage Class
+ * - Handles database operations for a specific entity
+ * - Inherits from EventEmitter for event handling
+ * - Connects to MongoDB using Mongoose
+ * - Defines methods for CRUD operations
+ * - Implements error handling for database operations
+ ************************************************************** */
 const { EventEmitter } = require('events');
 const mongoose = require('mongoose');
 const Path = require('path');
@@ -12,13 +20,14 @@ module.exports = class MongoStorage extends EventEmitter {
   }
 
   connect() {
-    const connectionUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
-    mongoose
-      .connect(connectionUrl)
-    // eslint-disable-next-line no-console
-      .then(() => console.log(`connected to ${this.entityName} collection `))
-    // eslint-disable-next-line no-console
-      .catch((error) => console.log(`connection error: ${error}`));
+    try {
+      const connectionUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
+      mongoose.connect(connectionUrl)
+        .then(() => console.log(`connected to ${this.entityName} collection `));
+    } catch (error) {
+      console.error(`connection error: ${error}`);
+      throw new Error('DataBase connection error');
+    }
   }
 
   find() {
@@ -27,6 +36,10 @@ module.exports = class MongoStorage extends EventEmitter {
 
   findById(_id) {
     return this.Model.find({ _id });
+  }
+
+  findByParents(parents) {
+    return this.Model.find({ parents });
   }
 
   create(data) {

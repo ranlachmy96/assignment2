@@ -1,3 +1,9 @@
+/** *************************************************************
+ * Family Reunification Modal
+ * - Defines the schema for the family reunification data
+ * - Uses Mongoose for schema creation and modeling
+ * - Exports the modal for use in database operations
+ ************************************************************** */
 const { Schema, model } = require('mongoose');
 
 const familyReunificationSchema = new Schema({
