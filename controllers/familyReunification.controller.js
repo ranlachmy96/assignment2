@@ -34,7 +34,6 @@ const generateId = async () => {
 
 exports.getAllReunificationCase = async (req, res, next) => {
   try {
-    console.log('controller test');
     const result = await find();
     if (result.length === 0) {
       throw new EntityNotFound('familyReunification data ');
