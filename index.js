@@ -8,7 +8,14 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Allow requests from any origin
-app.use(cors());
+// Configure CORS with dynamic origin
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests from any origin
+    callback(null, true);
+  },
+  credentials: true // Allow credentials (e.g., cookies, authorization headers)
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
