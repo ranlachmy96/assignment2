@@ -13,13 +13,23 @@ if (process.env.DB_HOST && process.env.DB_USER && process.env.DB_PASS) {
   throw new Error('Database connection parameters not provided');
 }
 
-const familyReunificationRepository = {
-  find: () => (storage ? storage.find() : null),
-  findById: (id) => (storage ? storage.findById(id) : null),
-  findByParents: (parents) => (storage ? storage.findByParents(parents) : null),
-  create: (reunificationCase) => (storage ? storage.create(reunificationCase) : null),
-  update: (id, reunificationCase) => (storage ? storage.update(id, reunificationCase) : null),
-  delete: (id) => (storage ? storage.delete(id) : null),
-};
+// const familyReunificationRepository = {
+//   find: () => (storage ? storage.find() : null),
+//   findById: (id) => (storage ? storage.findById(id) : null),
+//   findByParents: (parents) => (storage ? storage.findByParents(parents) : null),
+//   create: (reunificationCase) => (storage ? storage.create(reunificationCase) : null),
+//   update: (id, reunificationCase) => (storage ? storage.update(id, reunificationCase) : null),
+//   delete: (id) => (storage ? storage.delete(id) : null),
+// };
 
-module.exports = { familyReunificationRepository };
+const find = () => (storage ? storage.find() : null);
+const findById = (id) => (storage ? storage.findById(id) : null);
+const findByParents = (parents) => (storage ? storage.findByParents(parents) : null);
+const create = (reunificationCase) => (storage ? storage.create(reunificationCase) : null);
+const update = (id, reunificationCase) => (storage ? storage.update(id, reunificationCase) : null);
+
+const deleteById = (id) => (storage ? storage.delete(id) : null);
+
+module.exports = {
+  find, findById, findByParents, create, update, deleteById,
+};

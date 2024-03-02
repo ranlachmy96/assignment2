@@ -19,10 +19,10 @@ module.exports = class MongoStorage extends EventEmitter {
     this.connect();
   }
 
-  connect() {
+  async connect() {
     try {
       const connectionUrl = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`;
-      mongoose.connect(connectionUrl)
+      await mongoose.connect(connectionUrl)
         .then(() => console.log(`connected to ${this.entityName} collection `));
     } catch (error) {
       console.error(`connection error: ${error}`);

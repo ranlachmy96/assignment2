@@ -1,22 +1,22 @@
+const {
+  describe,
+  expect,
+  test,
+  beforeEach,
+  it,
+} = require('@jest/globals');
 const request = require('supertest');
 const app = require('../index');
 require('dotenv').config();
 const familyReunificationRepository = require('../repositories/familyReunification.repository');
-const { PropertyNotFound, EntityNotFound } = require('../errors/404.errors');
-const { PropertyExists, BodyNotSent } = require('../errors/400.errors');
-const { ServerError } = require('../errors/500.errors');
 
 jest.mock('../repositories/familyReunification.repository');
-
+// get all cases
 describe('GET /familyReunification', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    console.log(familyReunificationRepository); // Log to check the structure
-  });
-
+  beforeEach(() => jest.clearAllMocks());
   // Success 200
   it('should return all reunification cases', async () => {
-    const mockfamilyReunification = [
+    const mockFamilyReunification = [
       {
         _id: 1,
         parents: ['Alice Brown', 'Bob Brown'],
@@ -27,10 +27,15 @@ describe('GET /familyReunification', () => {
         __v: 0,
       },
     ];
-
-    familyReunificationRepository.mockResolvedValue(mockfamilyReunification);
-    const res = await request(app).get('/familyReunification');
+    // familyReunificationRepository.find.mockResolvedValue(
+    //   mockFamilyReunification,
+    // );
+    familyReunificationRepository.find.mockResolvedValue(
+      mockFamilyReunification,
+    );
+    const res = await request(app).get('/familyReunification/');
+    console.log('this is my test', res.body);
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual(mockfamilyReunification);
+    expect(res.body).toEqual(mockFamilyReunification);
   });
 });

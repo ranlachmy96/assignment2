@@ -9,16 +9,18 @@
  **************************************************** */
 require('dotenv').config();
 require('express-async-errors');
+const cors = require('cors');
 const express = require('express');
 const logger = require('./loggers/logger');
 const { errorHandler } = require('./middlewares/errorHandler');
 
 const app = express();
-const port = process.env.PORT || 3000;
+// const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logger);
+app.use(cors());
 
 const {
   familyReunificationRouter,
@@ -26,5 +28,8 @@ const {
 
 app.use('/familyReunification', familyReunificationRouter);
 
-app.use(errorHandler);
-app.listen(port, () => console.log(`Express server is running on port ${port}`));
+// app.listen(port, () => {
+//   console.log(`Express server is running on port ${port}`);
+// });
+
+module.exports = app;

@@ -5,13 +5,15 @@
  * - Defines methods for each CRUD operation
  * - Implements error handling for each method
  ************************************************************** */
-const { familyReunificationRepository } = require('../repositories/familyReunification.repository');
+const {
+  find, findById, findByParents, create, update, deleteById,
+} = require('../repositories/familyReunification.repository');
 const { PropertyNotFound, EntityNotFound } = require('../errors/404.errors');
 const { PropertyExists, BodyNotSent } = require('../errors/400.errors');
 
 const generateId = async () => {
   try {
-    const reunificationCases = await familyReunificationRepository.find();
+    const reunificationCases = await find();
     if (reunificationCases.length === 0) {
       return 1;
     }
@@ -32,7 +34,8 @@ const generateId = async () => {
 
 exports.getAllReunificationCase = async (req, res, next) => {
   try {
-    const result = await familyReunificationRepository.find();
+    console.log('controller test');
+    const result = await find();
     if (result.length === 0) {
       throw new EntityNotFound('familyReunification data ');
     }
@@ -44,7 +47,7 @@ exports.getAllReunificationCase = async (req, res, next) => {
 
 exports.getReunificationCase = async (req, res, next) => {
   try {
-    const result = await familyReunificationRepository.findById(req.params.id);
+    const result = await findById(req.params.id);
     if (result.length === 0) {
       throw new PropertyNotFound(`specific familyReunification data with id of ${req.params.id}`);
     }
@@ -64,13 +67,13 @@ exports.createReunificationCase = async (req, res, next) => {
       throw new Error('At least one parent must be provided.');
     }
 
-    const existingCase = await familyReunificationRepository.findByParents(req.body.parents);
+    const existingCase = await findByParents(req.body.parents);
     console.log(existingCase);
     if (JSON.stringify(existingCase) !== '[]') { throw new PropertyExists('parents'); }
     const { body: reunificationCase } = req;
     // eslint-disable-next-line no-underscore-dangle
     reunificationCase._id = await generateId();
-    const result = await familyReunificationRepository.create(reunificationCase);
+    const result = await create(reunificationCase);
     res.status(200).json(result || 'added successfully');
   } catch (error) {
     next(error);
@@ -85,13 +88,13 @@ exports.updateReunificationCase = async (req, res, next) => {
     if (!req.params.id) {
       throw new PropertyNotFound('ID');
     }
-    const existingCase = await familyReunificationRepository.findById(req.params.id);
+    const existingCase = await findById(req.params.id);
     if (existingCase.length === 0) {
       throw new PropertyNotFound(`Reunification case with id ${req.params.id}`);
     }
 
     const { body: reunificationCase, params: { id } } = req;
-    const result = await familyReunificationRepository.update(id, reunificationCase);
+    const result = await update(id, reunificationCase);
     res.status(200).send(result);
   } catch (error) {
     next(error);
@@ -100,12 +103,12 @@ exports.updateReunificationCase = async (req, res, next) => {
 
 exports.deleteReunificationCase = async (req, res, next) => {
   try {
-    const existingCase = await familyReunificationRepository.findById(req.params.id);
+    const existingCase = await findById(req.params.id);
     if (existingCase.length === 0) {
       throw new PropertyNotFound(`Reunification case with id ${req.params.id}`);
     }
     const { params: { id } } = req;
-    const result = await familyReunificationRepository.delete(id);
+    const result = await deleteById(id);
     res.status(200).send(result);
   } catch (error) {
     next(error);
